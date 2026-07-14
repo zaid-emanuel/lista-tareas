@@ -70,3 +70,56 @@ body {
   margin-top: 24px;
   font-size: 0.85rem;
 }
+
+:root {
+  --bg-color: #1e1e2f;
+  --card-bg: #2a2a3d;
+  --accent: #ff6b6b;
+  --accent-hover: #ff8787;
+  --text-main: #f0f0f5;
+  --text-muted: #a0a0b8;
+  --input-bg: #33334a;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-main);
+}
+
+.app-container {
+  background: var(--card-bg);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.app-header h1 {
+  color: var(--accent);
+}
+
+.task-counter {
+  color: var(--text-muted);
+}
+
+#task-input, #task-date {
+  background: var(--input-bg);
+  color: var(--text-main);
+  border: 1px solid #44445c;
+}
+
+#add-task-btn {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+#add-task-btn:hover {
+  background: var(--accent-hover);
+}
+
+.task-list-container li {
+  background: var(--input-bg);
+}
+
+.app-footer {
+  color: var(--text-muted);
+}
