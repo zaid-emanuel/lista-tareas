@@ -3,9 +3,16 @@ const inputTexto = document.getElementById('task-input');
 const inputFecha = document.getElementById('task-date');
 const botonAgregar = document.getElementById('add-task-btn');
 const listaTareas = document.getElementById('task-list');
+const contadorTareas = document.querySelector('.task-counter');
 
 // Arreglo que almacena las tareas en memoria
 let tareas = [];
+
+// Actualiza el texto del contador de tareas completadas
+function actualizarContador() {
+  const completadas = tareas.filter((tarea) => tarea.completada).length;
+  contadorTareas.textContent = `${completadas} tareas completadas`;
+}
 
 // Dibuja las tareas actuales dentro del <ul id="task-list">
 function renderizarTareas() {
@@ -13,6 +20,15 @@ function renderizarTareas() {
 
   tareas.forEach((tarea, indice) => {
     const li = document.createElement('li');
+    if (tarea.completada) li.classList.add('task-completed');
+
+    // Checkbox para marcar la tarea como completada
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = tarea.completada;
+    checkbox.dataset.accion = 'completar';
+    checkbox.dataset.indice = indice;
+    li.appendChild(checkbox);
 
     const spanTexto = document.createElement('span');
     spanTexto.textContent = tarea.texto;
@@ -45,6 +61,8 @@ function renderizarTareas() {
 
     listaTareas.appendChild(li);
   });
+
+  actualizarContador();
 }
 
 // Agrega una nueva tarea al arreglo y actualiza la lista visual
@@ -77,6 +95,12 @@ function actualizarTarea(indice) {
   }
 }
 
+// Marca o desmarca una tarea como completada
+function alternarCompletada(indice, estado) {
+  tareas[indice].completada = estado;
+  renderizarTareas();
+}
+
 // Evento al hacer clic en el botón "Agregar"
 botonAgregar.addEventListener('click', agregarTarea);
 
@@ -87,13 +111,11 @@ inputTexto.addEventListener('keydown', (evento) => {
   }
 });
 
-// Delegación de eventos para los botones de editar y eliminar
+// Delegación de eventos para checkbox, editar y eliminar
 listaTareas.addEventListener('click', (evento) => {
-  const boton = evento.target.closest('button');
-  if (!boton) return;
-
-  const indice = Number(boton.dataset.indice);
-  const accion = boton.dataset.accion;
+  const elemento = evento.target;
+  const indice = Number(elemento.dataset.indice);
+  const accion = elemento.dataset.accion;
 
   if (accion === 'eliminar') {
     eliminarTarea(indice);
@@ -101,5 +123,9 @@ listaTareas.addEventListener('click', (evento) => {
 
   if (accion === 'editar') {
     actualizarTarea(indice);
+  }
+
+  if (accion === 'completar') {
+    alternarCompletada(indice, elemento.checked);
   }
 });
