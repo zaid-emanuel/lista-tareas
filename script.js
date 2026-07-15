@@ -129,3 +129,17 @@ listaTareas.addEventListener('click', (evento) => {
     alternarCompletada(indice, elemento.checked);
   }
 });
+
+// Referencia al contenedor de nombres del equipo, definido en el footer
+const nombresEquipo = document.getElementById('team-names');
+
+// Lista de integrantes del equipo
+const integrantes = [
+  'Programador 1',
+  'Programador 2',
+  'Programador 3',
+  'Programador 4'
+];
+
+// Muestra los nombres del equipo separados por coma
+nombresEquipo.textContent = integrantes.join(', ');
