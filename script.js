@@ -125,10 +125,11 @@ listaTareas.addEventListener('click', (evento) => {
 
 // ===== Créditos del equipo =====
 const integrantes = [
-  'Programador 1',
-  'Programador 2',
-  'Programador 3',
-  'Programador 4'
+  'Programador 1: Zaid',
+  'Programador 2: Saul',
+  'Programador 3: Deyla',
+  'Programador 4: Medina',
+  'Programador 5: Alan',
 ];
 
 nombresEquipo.textContent = integrantes.join(', ');
