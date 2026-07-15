@@ -11,7 +11,7 @@ let tareas = [];
 function renderizarTareas() {
   listaTareas.innerHTML = '';
 
-  tareas.forEach((tarea) => {
+  tareas.forEach((tarea, indice) => {
     const li = document.createElement('li');
 
     const spanTexto = document.createElement('span');
@@ -24,6 +24,24 @@ function renderizarTareas() {
       spanFecha.textContent = `Vence: ${tarea.fecha}`;
       li.appendChild(spanFecha);
     }
+
+    // Contenedor de botones de acción
+    const divAcciones = document.createElement('div');
+    divAcciones.classList.add('task-actions');
+
+    const botonEditar = document.createElement('button');
+    botonEditar.textContent = '✏️';
+    botonEditar.dataset.accion = 'editar';
+    botonEditar.dataset.indice = indice;
+
+    const botonEliminar = document.createElement('button');
+    botonEliminar.textContent = '🗑️';
+    botonEliminar.dataset.accion = 'eliminar';
+    botonEliminar.dataset.indice = indice;
+
+    divAcciones.appendChild(botonEditar);
+    divAcciones.appendChild(botonEliminar);
+    li.appendChild(divAcciones);
 
     listaTareas.appendChild(li);
   });
@@ -43,6 +61,22 @@ function agregarTarea() {
   renderizarTareas();
 }
 
+// Elimina una tarea del arreglo según su índice
+function eliminarTarea(indice) {
+  tareas.splice(indice, 1);
+  renderizarTareas();
+}
+
+// Actualiza el texto de una tarea existente
+function actualizarTarea(indice) {
+  const nuevoTexto = prompt('Actualiza el texto de la tarea:', tareas[indice].texto);
+
+  if (nuevoTexto !== null && nuevoTexto.trim() !== '') {
+    tareas[indice].texto = nuevoTexto.trim();
+    renderizarTareas();
+  }
+}
+
 // Evento al hacer clic en el botón "Agregar"
 botonAgregar.addEventListener('click', agregarTarea);
 
@@ -50,5 +84,22 @@ botonAgregar.addEventListener('click', agregarTarea);
 inputTexto.addEventListener('keydown', (evento) => {
   if (evento.key === 'Enter') {
     agregarTarea();
+  }
+});
+
+// Delegación de eventos para los botones de editar y eliminar
+listaTareas.addEventListener('click', (evento) => {
+  const boton = evento.target.closest('button');
+  if (!boton) return;
+
+  const indice = Number(boton.dataset.indice);
+  const accion = boton.dataset.accion;
+
+  if (accion === 'eliminar') {
+    eliminarTarea(indice);
+  }
+
+  if (accion === 'editar') {
+    actualizarTarea(indice);
   }
 });
